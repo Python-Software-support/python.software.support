@@ -226,17 +226,19 @@
             <b>Email：</b>info.ai.support<span>@</span>icloud.com
         </p>
 
-    <details style="margin-top:10px;">
+    <details id="p" style="margin-top:10px;">
         <summary style="font-size:18px; color:#4da6ff; cursor:pointer;">プライバシーポリシー</summary>
-        <div style="margin-top:10px;">
-            <a href="privacy.html" style="color:#76c4ff; text-decoration:none;">privacy.html を開く</a>
-        </div>
+        <div id="c" style="margin-top:10px;"></div>
     </details>
-        
     </div>
-
 </div>
 
+<script>
+p.addEventListener("toggle", async () => {
+  if (p.open && !c.innerHTML) c.innerHTML = await (await fetch("privacy.html")).text();
+});
+</script>
+    
 <script>
 // 追記：スクロール連動ハイライト
 document.addEventListener("scroll", () => {
@@ -438,6 +440,7 @@ Promise.all([
 
 </body>
 </html>
+
 
 
 
