@@ -282,7 +282,7 @@ AI連携ツールから配信補助ツールまで、一つの環境で活用で
     <script>
         p.addEventListener("toggle", async () => {
             if (p.open && !c.innerHTML) {
-                c.innerHTML = await (await fetch("privacy.html")).text();
+                c.innerHTML = await (await fetch("privacy.html?v=" + Date.now())).text();
             }
         });
     </script>
@@ -490,6 +490,7 @@ AI連携ツールから配信補助ツールまで、一つの環境で活用で
 
 
 </html>
+
 
 
 
