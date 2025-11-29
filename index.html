@@ -291,6 +291,17 @@ AI連携ツールから配信補助ツールまで、一つの環境で活用で
     </script>
 
     <script>
+        const pay = document.getElementById("pay");
+        const pay_content = document.getElementById("pay_content");
+
+        pay.addEventListener("toggle", async () => {
+            if (pay.open && !pay_content.innerHTML) {
+                pay_content.innerHTML = await (await fetch("決済方法.html?v=" + Date.now())).text();
+            }
+        });
+    </script>
+
+    <script>
         // 追記：スクロール連動ハイライト
         document.addEventListener("scroll", () => {
             const sections = document.querySelectorAll("h1[id]");
@@ -493,6 +504,7 @@ AI連携ツールから配信補助ツールまで、一つの環境で活用で
 
 
 </html>
+
 
 
 
