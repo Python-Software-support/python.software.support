@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お問い合わせフォーム</title>
+
+    <style>
+        body {
+            background-image: url("スクリプト画像/galaxy.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: "Yu Gothic UI", sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #e0e0e0;
+        }
+
+        .form-container {
+            background-color: #1a1a1a;
+            width: 90%;
+            max-width: 900px;
+            min-height: 610px;
+            padding: 20px 20px 80px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .title {
+            font-size: 32px;
+            color: #4da6ff;
+            margin-bottom: 20px;
+        }
+
+        .label {
+            text-align: left;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto 5px auto;
+            font-size: 20px;
+            color: #4da6ff;
+        }
+
+        .input, textarea {
+            width: 100%;
+            max-width: 700px;
+            background-color: #0a0a0a;
+            border: 1px solid #4da6ff;
+            padding: 10px;
+            border-radius: 4px;
+            color: #e0e0e0;
+            font-size: 18px;
+            outline: none;
+            margin-left: -10px;
+        }
+
+        textarea {
+            height: 200px;
+            resize: none;
+        }
+
+        .send-btn {
+            position: absolute;          /* ← フレーム内で絶対配置 */
+            bottom: 20px;                /* ← 下から20pxに固定 */
+            left: 50%;                   /* ← 中央へ移動 */
+            transform: translateX(-50%); /* ← 完全な中央寄せ */
+            width: 100px;
+            height: 30px;
+            padding: 0;
+            background-color: #4da6ff;
+            color: #000;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .send-btn:hover {
+            background-color: #a8ddff;
+        }
+        .input:focus, textarea:focus {
+            border-color: #66c2ff;
+            box-shadow: 0 0 10px #4da6ff;
+        }
+
+        #confirm-screen {
+            width: 100%;
+        }
+
+        #confirm-screen .form-container {
+            margin: 0 auto;
+        }        
+
+        #confirm-screen .input {
+            margin-left: 0;
+            padding-left: 76px;
+            text-align: left;
+        }
+
+        #confirm-message {
+            overflow-wrap: break-word;
+            word-break: break-word;
+            white-space: pre-wrap;
+        }
+
+        @media screen and (max-width: 600px) {
+            #confirm-screen .form-container {
+                text-align: left;
+            }
+            #confirm-screen .label {
+                text-align: left;
+            }
+            #confirm-screen .input {
+                margin-left: 0;
+                padding-left: 0;
+                text-align: left;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <div class="title">お問い合わせフォーム</div>
+
+        <div class="label">名前</div>
+        <input type="text" class="input">
+
+        <div class="label" style="margin-top: 20px;">メールアドレス</div>
+        <input type="email" class="input">
+
+        <div class="label" style="margin-top: 20px;">お問い合わせ内容</div>
+        <textarea class="input"></textarea>
+
+        <button class="send-btn" type="button">確認画面</button>
+    </div>
+
+<div id="confirm-screen" style="display: none;">
+    <div class="form-container">
+        <div class="title">確認画面</div>
+
+        <div class="label">名前</div>
+        <div id="confirm-name" class="input" style="background:none; border:none;"></div>
+
+        <div class="label" style="margin-top: 20px;">メールアドレス</div>
+        <div id="confirm-email" class="input" style="background:none; border:none;"></div>
+
+        <div class="label" style="margin-top: 20px;">お問い合わせ内容</div>
+        <div id="confirm-message" class="input" style="background:none; border:none; height:200px; overflow-y:auto;"></div>
+
+        <button id="back-btn" class="send-btn" style="bottom:70px;">戻る</button>
+        <button id="submit-btn" class="send-btn">送信</button>
+    </div>
+</div>
+
+<script>
+document.querySelector(".form-container .send-btn").addEventListener("click", function () {
+
+    const name = document.querySelectorAll(".input")[0].value.trim();
+    const email = document.querySelectorAll(".input")[1].value.trim();
+    const message = document.querySelectorAll(".input")[2].value.trim();
+
+    // 必須チェック
+    if (!name || !email || !message) {
+        setTimeout(() => alert("すべての項目を入力してください。"), 50);
+        return;
+    }
+
+    // メール形式チェック（簡易）
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        setTimeout(() => alert("メールアドレスの形式が正しくありません。"), 50);
+        return;
+    }
+
+    // 確認画面へ反映
+    document.getElementById("confirm-name").textContent = name;
+    document.getElementById("confirm-email").textContent = email;
+    document.getElementById("confirm-message").textContent = message;
+
+    // 入力画面を隠し、確認画面を表示
+    document.querySelector("body > .form-container").style.display = "none";
+    document.getElementById("confirm-screen").style.display = "block";
+});
+
+document.getElementById("back-btn").addEventListener("click", function () {
+    // 確認画面を隠す
+    document.getElementById("confirm-screen").style.display = "none";
+
+    // 入力画面を再表示
+    document.querySelector(".form-container").style.display = "block";
+});
+
+document.getElementById("submit-btn").addEventListener("click", function () {
+
+    const name = document.querySelectorAll(".input")[0].value.trim();
+    const email = document.querySelectorAll(".input")[1].value.trim();
+    const message = document.querySelectorAll(".input")[2].value.trim();
+
+    fetch("http://127.0.0.1:8000/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === "ok") {
+            setTimeout(() => alert("送信が完了しました。"), 50);
+        } else {
+            alert("送信に失敗しました。");
+        }
+
+        document.getElementById("confirm-screen").style.display = "none";
+        document.querySelector(".form-container").style.display = "block";
+
+        document.querySelectorAll(".input")[0].value = "";
+        document.querySelectorAll(".input")[1].value = "";
+        document.querySelectorAll(".input")[2].value = "";
+    })
+    .catch(() => {
+        alert("送信に失敗しました。");
+    });
+});
+
+</script>
+
+<script>
+document.querySelectorAll(".input").forEach((field, i) => {
+    field.addEventListener("mouseenter", () => {
+        document.querySelectorAll(".label")[i].style.color = "#a8ddff";
+    });
+    field.addEventListener("mouseleave", () => {
+        document.querySelectorAll(".label")[i].style.color = "#4da6ff";
+    });
+});
+</script>
+
+<div id="error-box" style="
+    display:none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+"></div>
+</body>
+</html>
